@@ -18,7 +18,8 @@ async def setup_connection(app, loop):
 		password=os.getenv("A801_API_PASS"),
 		db=os.getenv("A801_API_DB"),
 		loop=loop,
-		cursorclass=aiomysql.SSDictCursor
+		cursorclass=aiomysql.SSDictCursor,
+		autocommit=True
 	)
 
 	pools.cfm = await aiomysql.create_pool(
@@ -28,7 +29,8 @@ async def setup_connection(app, loop):
 		password=os.getenv("CFM_API_PASS"),
 		db=os.getenv("CFM_API_DB"),
 		loop=loop,
-		cursorclass=aiomysql.SSDictCursor
+		cursorclass=aiomysql.SSDictCursor,
+		autocommit=True
 	)
 
 @blueprint.route("/<path:.*>")

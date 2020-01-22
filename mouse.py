@@ -9,31 +9,24 @@ from sanic import response
 pools = SimpleNamespace()
 blueprint = Blueprint("mouse", url_prefix="/mouse")
 
-ADMIN = 2 ** 0
-MODO = 2 ** 1
-SENTI = 2 ** 2
-MAPCREW = 2 ** 3
-MODULE = 2 ** 4
-FUNCORP = 2 ** 5
-FASHION = 2 ** 6
+ranks = {
+	"administrator": 2 ** 0,
+	"moderator": 2 ** 1,
+	"sentinel": 2 ** 2,
+	"mapcrew": 2 ** 3,
+	"module_team": 2 ** 4,
+	"funcorp": 2 ** 5,
+	"fashion_squad": 2 ** 6
+}
 
 def normalize_rank(rank):
-	ranks = []
-	if rank & ADMIN:
-		ranks.append("administrator")
-	if rank & MODO:
-		ranks.append("moderator")
-	if rank & SENTI:
-		ranks.append("sentinel")
-	if rank & MAPCREW:
-		ranks.append("mapcrew")
-	if rank & MODULE:
-		ranks.append("module_team")
-	if rank & FUNCORP:
-		ranks.append("funcorp")
-	if rank & FASHION:
-		ranks.append("fashion_squad")
-	return ranks
+	rank_list = []
+
+	for filter in ranks.items():
+		if rank & filter[1]:
+			rank_list.append(filter[0])
+
+	return rank_list
 
 @blueprint.listener("before_server_start")
 async def setup_connection(app, loop):
